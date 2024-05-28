@@ -1,12 +1,34 @@
-import { createServer, request } from "http";
-import url from "url";
+import { createServer } from "http";
+import {
+  getProducts,
+  getProduct,
+  createProduct,
+} from "./src/controllers/productController.js";
+import { client } from "./src/infra/database/client/client.js";
 
 const server = createServer((req, res) => {
-  res.writeHead(200, { "Content-Type": "application/json" });
-  res.end(JSON.stringify({ message: "okay" }));
+  if (req.url === "/api/products" && req.method === "GET") {
+    getProducts(req, res);
+  } else if (
+    req.url.match(/\/api\/products\/([0-9]+)/) &&
+    req.method === "GET"
+  ) {
+    const id = req.url.split("/")[3];
+    getProduct(req, res, id);
+  } else if (req.url === "/api/products" && req.method === "POST") {
+    createProduct(req, res);
+  } else {
+    res.writeHead(404, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ message: "route not found" }));
+  }
 });
 
 const PORT = process.env.PORT || 5000;
+
+client
+  .connect()
+  .then(() => console.log("connected successfuly"))
+  .catch((e) => console.log(e.message));
 
 server.listen(PORT, () => console.log(`server running on port ${PORT}`));
 
