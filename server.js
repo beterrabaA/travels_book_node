@@ -7,6 +7,8 @@ import {
 import { client } from "./src/infra/database/client/client.js";
 import "dotenv/config";
 
+const PORT = process.env.PORT || 3000;
+
 const server = createServer((req, res) => {
   if (req.url === "/api/products" && req.method === "GET") {
     getProducts(req, res);
@@ -23,8 +25,6 @@ const server = createServer((req, res) => {
     res.end(JSON.stringify({ message: "route not found" }));
   }
 });
-
-const PORT = process.env.PORT || 3000;
 
 client
   .connect()
