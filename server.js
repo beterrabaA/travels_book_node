@@ -33,7 +33,7 @@ client
 
 server.listen(PORT, () => console.log(`server running on port ${PORT}`));
 
-client.on("notification", (msg) => console.log(msg));
+client.on("notification", (msg) => console.log("notification",msg));
 client.on("notice", (msg) => console.warn("notice:", msg));
 
 server.on("connection", (socket) => console.log("someone connected!"));
