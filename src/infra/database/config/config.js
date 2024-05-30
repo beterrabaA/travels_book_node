@@ -3,12 +3,11 @@ import "dotenv/config";
 export const config = {
     user: process.env.PGUSER || 'root',
     password: process.env.PGPASSWORD || 'root',
-    host: process.env.PGHOST || 'locahost',
+    host: process.env.PGHOST || 'localhost',
     port: process.env.PGPORT || 5432,
     database: process.env.PGDATABASE || 'database'
 }
 
-// {
     // user?: string, // default process.env.PGUSER || process.env.USER
     // password: "string or function", //default process.env.PGPASSWORD
     // host?: string, // default process.env.PGHOST
