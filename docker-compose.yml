@@ -7,16 +7,21 @@ services:
       dockerfile: Dockerfile
     container_name: app_server
     depends_on:
-      - postgres_db
-    env_file:
-      - .env
+      postgres_db:
+        condition: service_healthy
+    environment:
+      - PGUSER=${PGUSER}
+      - PGPASSWORD=${PGPASSWORD}
+      - PGHOST=${PGHOST}
+      - PGPORT=${PGPORT}
+      - PGDATABASE=${PGDATABASE}
     ports:
       - 3000:3000
   postgres_db:
     image: postgres:16.3-alpine3.20
     container_name: app_db
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready"]
+      test: [ "CMD-SHELL", "pg_isready" ]
       interval: 3s
       timeout: 5s
       retries: 10
