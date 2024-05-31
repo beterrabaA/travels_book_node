@@ -7,10 +7,12 @@ export const config = {
     port: process.env.PGPORT || 5432,
     database: process.env.PGDATABASE || 'database'
 }
-    // user?: string, // default process.env.PGUSER || process.env.USER
-    // password: "string or function", //default process.env.PGPASSWORD
-    // host?: string, // default process.env.PGHOST
-    // port?: number, // default process.env.PGPORT
+
+//   }
+//     user?: string, // default process.env.PGUSER || process.env.USER
+//     password: "string or function", //default process.env.PGPASSWORD
+//     host?: string, // default process.env.PGHOST
+//     port?: number, // default process.env.PGPORT
 //     database?: string, // default process.env.PGDATABASE || user
 //     connectionString?: string, // e.g. postgres://user:password@host:5432/database
 //     ssl?: any, // passed directly to node.TLSSocket, supports all tls.connect options
