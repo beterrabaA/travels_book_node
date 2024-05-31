@@ -2,6 +2,7 @@ import {
   findAllProducts,
   findProductById,
   create,
+  update,
 } from "../models/products.js";
 import { getRequestData, sendResponse } from "../utils/index.js";
 
@@ -11,7 +12,7 @@ export async function getProducts(request, response) {
     const result = await findAllProducts();
     sendResponse(response, 200, result.rows);
   } catch (error) {
-    console.log(error);
+    sendResponse(response, 400, { message: error.message });
   }
 }
 
@@ -19,26 +20,39 @@ export async function getProduct(request, response, id) {
   try {
     const product = await findProductById(id);
     if (!product.rows[0]) {
-      response.writeHead(404, { "Content-Type": "application/json" });
-      response.end(JSON.stringify({ message: "product not found" }));
+      sendResponse(response, 404, { message: "product not found" })
     } else {
-      response.writeHead(200, { "Content-Type": "application/json" });
-      response.end(JSON.stringify(product.rows[0]));
+      sendResponse(response, 200, product.rows[0]);
     }
-  } catch (error) {}
+  } catch (error) {
+    sendResponse(response, 400, { message: error.message });
+  }
 }
 
 export async function createProduct(request, response) {
   try {
     const body = await getRequestData(request);
-    const { title, description, price } = JSON.parse(body);
+    const { name, description, price } = JSON.parse(body);
 
-    const product = { title, description, price };
+    const product = { name, description, price };
 
     await create(product);
-    response.writeHead(201, { "Content-Type": "application/json" });
-    response.end(JSON.stringify({ message: "product created!" }));
+    sendResponse(response, 201, { message: "Product created" });
   } catch (error) {
-    console.log(error);
+    sendResponse(response, 400, { message: error.message });
+  }
+}
+
+export async function updateProduct(request, response, id) {
+  try {
+    const body = await getRequestData(request);
+    const { name, description, price } = JSON.parse(body);
+
+    const product = { name, description, price };
+
+    await update(id, product)
+    sendResponse(response, 202, { message: "Product updated" })
+  } catch (error) {
+    sendResponse(response, 400, { message: error.message });
   }
 }
