@@ -10,7 +10,9 @@ export async function getProducts(request, response) {
   try {
     const result = await findAllProducts();
     sendResponse(response, 200, result.rows);
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export async function getProduct(request, response, id) {
