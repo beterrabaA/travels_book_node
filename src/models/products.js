@@ -39,8 +39,8 @@ export function update(id, data) {
 export function deleteProductById(id) {
   return new Promise((resolve, reject) => {
     const queryText = 'DELETE FROM books WHERE id = $1;'
-    query(queryText, [id])
-    resolve(1)
+    const result = query(queryText, [id])
+    resolve(result)
     reject(0)
   })
 }
