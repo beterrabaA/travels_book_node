@@ -3,6 +3,7 @@ import {
   findProductById,
   create,
   update,
+  deleteProductById,
 } from "../models/products.js";
 import { getRequestData, sendResponse } from "../utils/index.js";
 
@@ -52,6 +53,15 @@ export async function updateProduct(request, response, id) {
 
     await update(id, product)
     sendResponse(response, 202, { message: "Product updated" })
+  } catch (error) {
+    sendResponse(response, 400, { message: error.message });
+  }
+}
+
+export async function deleteProduct(request, response, id) {
+  try {
+    await deleteProductById(id)
+    sendResponse(response, 204, {})
   } catch (error) {
     sendResponse(response, 400, { message: error.message });
   }
