@@ -3,6 +3,8 @@ import {
   getProducts,
   getProduct,
   createProduct,
+  updateProduct,
+  deleteProduct
 } from "./src/controllers/productController.js";
 import { client } from "./src/infra/database/client/client.js";
 import "dotenv/config";
@@ -16,6 +18,12 @@ const server = createServer((req, res) => {
   } else if (urlMatcher && req.method === "GET") {
     const id = req.url.split("/")[3];
     getProduct(req, res, id);
+  } else if (urlMatcher && req.method === "PUT") {
+    const id = req.url.split("/")[3];
+    updateProduct(req, res, id);
+  } else if (urlMatcher && req.method === "PUT") {
+    const id = req.url.split("/")[3];
+    deleteProduct(req, res, id);
   } else if (req.url === "/api/products" && req.method === "POST") {
     createProduct(req, res);
   } else {
