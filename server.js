@@ -1,31 +1,29 @@
 import { createServer } from "http";
-import {
-  getProducts,
-  getProduct,
-  createProduct,
-  updateProduct,
-  deleteProduct
-} from "./src/controllers/productController.js";
 import { client } from "./src/infra/database/client/client.js";
+import { getProducts, createProduct } from "./src/controllers/productController.js";
+import { productRoutes } from "./src/routes/products.js";
 import "dotenv/config";
 
 const PORT = process.env.PORT || 3000;
 
 const server = createServer((req, res) => {
+  const baseRoteMatch = req.url === "/api/products"
   const urlMatcher = req.url.match(/\/api\/products\/([0-9]+)/)
-  if (req.url === "/api/products" && req.method === "GET") {
+  const method = req.method;
+  const allowedMethods = ["GET", "PUT", "DELETE"];
+
+  if (baseRoteMatch && method === "GET") {
     getProducts(req, res);
-  } else if (urlMatcher && req.method === "GET") {
+
+  } else if (urlMatcher && allowedMethods.includes(method)) {
     const id = req.url.split("/")[3];
-    getProduct(req, res, id);
-  } else if (urlMatcher && req.method === "PUT") {
-    const id = req.url.split("/")[3];
-    updateProduct(req, res, id);
-  } else if (urlMatcher && req.method === "PUT") {
-    const id = req.url.split("/")[3];
-    deleteProduct(req, res, id);
-  } else if (req.url === "/api/products" && req.method === "POST") {
+    const route = productRoutes[method];
+
+    route(req, res, id);
+
+  } else if (baseRoteMatch && method === "POST") {
     createProduct(req, res);
+
   } else {
     res.writeHead(404, { "Content-Type": "application/json" });
     res.end(JSON.stringify({ message: "route not found" }));
@@ -43,7 +41,3 @@ client.on("notification", (msg) => console.log("notification", msg));
 client.on("notice", (msg) => console.warn("notice:", msg));
 
 server.on("connection", (socket) => console.log("someone connected!"));
-
-// const urlMatch = req.url.match(/\/api\/products\/(\d+)/);
-// const id = urlMatch[1];
-// const handleRequest = (req, res) => {
