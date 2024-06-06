@@ -1,7 +1,7 @@
 import { createServer } from "http";
-import { client } from "./src/infra/database/client/client.js";
-import { getProducts, createProduct } from "./src/controllers/productController.js";
-import { productRoutes } from "./src/routes/products.js";
+import { client } from "./infra/database/client/client.js";
+import { getProducts, createProduct } from "./controllers/productController.js";
+import { productRoutes } from "./routes/products.js";
 import "dotenv/config";
 
 const PORT = process.env.PORT || 3000;
@@ -36,8 +36,3 @@ client
   .catch((e) => console.log(e.message));
 
 server.listen(PORT, () => console.log(`server running on port ${PORT}`));
-
-client.on("notification", (msg) => console.log("notification", msg));
-client.on("notice", (msg) => console.warn("notice:", msg));
-
-server.on("connection", (socket) => console.log("someone connected!"));
