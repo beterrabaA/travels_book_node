@@ -11,7 +11,7 @@ export function findAllProducts() {
 
 export function findProductById(id) {
   return new Promise((resolve, reject) => {
-    const queryText = 'SELECT * FROM books WHERE id = $1'
+    const queryText = 'SELECT * FROM books WHERE id = $1;'
     const product = query(queryText, [id])
     resolve(product);
   });
