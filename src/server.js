@@ -3,6 +3,7 @@ import { client } from "./infra/database/client/client.js";
 import { getProducts, createProduct } from "./controllers/productController.js";
 import { productRoutes } from "./routes/products.js";
 import "dotenv/config";
+import { getTravels } from "./controllers/travelController.js";
 
 const PORT = process.env.PORT || 3000;
 
@@ -11,9 +12,13 @@ const server = createServer((req, res) => {
   const urlMatcher = req.url.match(/\/api\/products\/([0-9]+)/)
   const method = req.method;
   const allowedMethods = ["GET", "PUT", "DELETE"];
+  const travelsBaseRoute = req.url === "/api/travels";
 
   if (baseRoteMatch && method === "GET") {
     getProducts(req, res);
+
+  } else if (travelsBaseRoute && method === "GET") {
+    getTravels(req, res);
 
   } else if (urlMatcher && allowedMethods.includes(method)) {
     const id = req.url.split("/")[3];
