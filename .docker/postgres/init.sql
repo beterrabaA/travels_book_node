@@ -4,7 +4,7 @@ CREATE DATABASE multiverse_travels;
 CREATE TABLE TRAVELS
 (
    ID SERIAL PRIMARY KEY,
-   LOCATIONS INT []
+   TRAVEL_STOPS INT []
 );
 
 CREATE TABLE BOOKS
@@ -14,6 +14,14 @@ CREATE TABLE BOOKS
    DESCRIPTION VARCHAR(255) NOT NULL,
    PRICE NUMERIC NOT NULL
 );
+
+INSERT INTO travels (travel_stops)
+VALUES
+    ('{1, 2}'),
+    ('{3, 4}'),
+    ('{5, 1}'),
+    ('{2, 3}'),
+    ('{4, 5}');
 
 INSERT INTO books (name, description, price) 
 VALUES
