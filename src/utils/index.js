@@ -1,3 +1,5 @@
+const API_URL = "https://rickandmortyapi.com/graphql"
+
 export const getRequestData = (request) => {
   return new Promise((resolve, reject) => {
     try {
@@ -29,4 +31,25 @@ export const transformSlotsToSQL = (data) => {
   string.slice(0, -2)
 
   return string
+}
+
+export async function requestRickAndMortyData(data) {
+  const dataString = `{query: {locationsByIds(ids: [${data}]) {id name type dimension residents {episode {name}}}`
+
+  const options = {
+    method: "POST",
+    body: dataString,
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8',
+    },
+  }
+
+  const response = await fetch(API_URL,options)
+  const dataRick = await response.json()
+
+  return dataRick
+
+}
+
+export const request_graphql = async (travelsIds) => {
 }
