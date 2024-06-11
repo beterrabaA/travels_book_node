@@ -34,22 +34,28 @@ export const transformSlotsToSQL = (data) => {
 }
 
 export async function requestRickAndMortyData(data) {
-  const dataString = `{query: {locationsByIds(ids: [${data}]) {id name type dimension residents {episode {name}}}`
+  const dataString = { "query": `{locationsByIds(ids: [${data}]) {id name type dimension residents {episode {name}}}}` }
 
   const options = {
     method: "POST",
-    body: dataString,
+    body: JSON.stringify(dataString),
     headers: {
       'Content-type': 'application/json; charset=UTF-8',
     },
   }
 
-  const response = await fetch(API_URL,options)
-  const dataRick = await response.json()
+  const response = await fetch(API_URL, options)
+  const { data: { locationsByIds } } = await response.json()
 
-  return dataRick
+  return locationsByIds
 
 }
 
 export const request_graphql = async (travelsIds) => {
+}
+
+export const optimizeStops = async (stops,expanded) => {
+  const popularity = {}
+  const dimesionPop = {}
+  const sotedStops = []
 }
